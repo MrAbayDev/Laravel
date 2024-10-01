@@ -12,16 +12,16 @@ use Illuminate\Support\Facades\Storage;
 
 class AdController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        $brands = Ad::all();
+        $branches = Ad::all();
         $userId = auth()->id();
         $ads = Ad::query()->withCount([
-            'bookmarkedByUser as bookmark' => function ($query) use ($userId) {
+            'bookmarkedByUsers as bookmark' => function ($query) use ($userId) {
             $query->where('user_id', $userId);
             }
         ])->get();
-        return view('ads.index', compact('ads', 'brands'));
+        return view('ads.index', compact('ads', 'branches'));
     }
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
@@ -31,7 +31,7 @@ class AdController extends Controller
         $ad  = new Ad();
         return view('ads.create', compact('action', 'ads', 'branches', 'ad'));
     }
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'title' => 'required | min:5',
