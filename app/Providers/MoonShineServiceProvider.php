@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\Ad;
+use App\MoonShine\Resources\AdResource;
+
+
+use App\MoonShine\Resources\BranchResource;
+use App\MoonShine\Resources\ImageResource;
+use App\MoonShine\Resources\StatusResource;
+use App\MoonShine\Resources\UserResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\MoonShine;
 use MoonShine\Menu\MenuGroup;
@@ -14,7 +22,7 @@ use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
 use MoonShine\Pages\Page;
 use Closure;
-
+use App\MoonShine\Resources\BookmarkResource;
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
 {
     /**
@@ -49,10 +57,14 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                     new MoonShineUserRoleResource()
                 ),
             ]),
+            MenuItem::make("Home", url("/"))->icon("heroicons.home")->customLinkAttributes(['target'=>'_blank']),
+            MenuItem::make("E'lonlar", new AdResource())->icon("heroicons.home-modern"),
+            MenuItem::make("branch",new BranchResource())->icon("heroicons.map-pin"),
+            MenuItem::make("status",new StatusResource())->icon("heroicons.check-circle"),
+            MenuItem::make("user",new UserResource())->icon("heroicons.user-circle"),
+            MenuItem::make("image",new ImageResource())->icon("heroicons.photo"),
+            MenuItem::make("Bookmarks", new BookmarkResource())->icon("heroicons.bookmark"),
 
-            MenuItem::make('Documentation', 'https://moonshine-laravel.com/docs')
-                ->badge(fn() => 'Check')
-                ->blank(),
         ];
     }
 
